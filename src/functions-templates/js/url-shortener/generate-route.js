@@ -5,7 +5,7 @@ var Hashids = require('hashids')
 
 module.exports = function handler(event, context, callback) {
   // Set the root URL according to the Netlify site we are within
-  var rootURL = process.env.URL + '/'
+  var rootURL = `${process.env.URL}/`
 
   // get the details of what we are creating
   var destination = event.queryStringParameters.to
@@ -17,7 +17,7 @@ module.exports = function handler(event, context, callback) {
 
   // ensure that a protocol was provided
   if (!destination.includes('://')) {
-    destination = 'http://' + destination
+    destination = `http://${destination}`
   }
 
   // prepare a payload to post
@@ -32,9 +32,9 @@ module.exports = function handler(event, context, callback) {
   request.post({ url: rootURL, formData: payload }, function (err) {
     var msg
     if (err) {
-      msg = 'Post to Routes stash failed: ' + err
+      msg = `Post to Routes stash failed: ${err}`
     } else {
-      msg = 'Route registered. Site deploying to include it. ' + rootURL + code
+      msg = `Route registered. Site deploying to include it. ${rootURL}${code}`
     }
     console.log(msg)
     // tell the user what their shortcode will be

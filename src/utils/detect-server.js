@@ -243,7 +243,7 @@ function formatSettingsArrForInquirer(settingsArr) {
       setting.possibleArgsArrs.map((args) => ({
         name: `[${chalk.yellow(setting.framework)}] ${setting.command} ${args.join(' ')}`,
         value: { ...setting, args },
-        short: setting.framework + '-' + args.join(' '),
+        short: `${setting.framework}-${args.join(' ')}`,
       }))
     )
   )

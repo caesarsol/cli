@@ -175,9 +175,9 @@ async function pickTemplate() {
         t.lang = lang
         return {
           // confusing but this is the format inquirer wants
-          name: `[${t.name}] ` + t.description,
+          name: `[${t.name}] ${t.description}`,
           value: t,
-          short: lang + '-' + t.name,
+          short: `${lang}-${t.name}`,
         }
       })
     return registry
@@ -209,7 +209,7 @@ async function downloadFromURL(flags, args, functionsDir) {
   const functionName = flags.url.split('/').slice(-1)[0]
   const nameToUse = await getNameFromArgs(args, flags, functionName)
   const fnFolder = path.join(functionsDir, nameToUse)
-  if (fs.existsSync(fnFolder + '.js') && fs.lstatSync(fnFolder + '.js').isFile()) {
+  if (fs.existsSync(`${fnFolder}.js`) && fs.lstatSync(`${fnFolder}.js`).isFile()) {
     this.log(
       `${NETLIFYDEVWARN}: A single file version of the function ${nameToUse} already exists at ${fnFolder}.js. Terminating without further action.`
     )
@@ -225,12 +225,12 @@ async function downloadFromURL(flags, args, functionsDir) {
     folderContents.map(({ name, download_url: downloadUrl }) => {
       return fetch(downloadUrl)
         .then((res) => {
-          const finalName = path.basename(name, '.js') === functionName ? nameToUse + '.js' : name
+          const finalName = path.basename(name, '.js') === functionName ? `${nameToUse}.js` : name
           const dest = fs.createWriteStream(path.join(fnFolder, finalName))
           res.body.pipe(dest)
         })
         .catch((error) => {
-          throw new Error('Error while retrieving ' + downloadUrl + ` ${error}`)
+          throw new Error(`Error while retrieving ${downloadUrl} ${error}`)
         })
     })
   )
@@ -280,7 +280,7 @@ async function scaffoldFromTemplate(flags, args, functionsDir) {
     try {
       await downloadFromURL.call(this, flags, args, functionsDir)
     } catch (error) {
-      this.error(`$${NETLIFYDEVERR} Error downloading from URL: ` + flags.url)
+      this.error(`$${NETLIFYDEVERR} Error downloading from URL: ${flags.url}`)
       this.error(error)
       process.exit(1)
     }
@@ -316,7 +316,7 @@ async function scaffoldFromTemplate(flags, args, functionsDir) {
       fs.unlinkSync(path.join(functionPath, '.netlify-function-template.js'))
       // rename the root function file if it has a different name from default
       if (name !== templateName) {
-        fs.renameSync(path.join(functionPath, templateName + '.js'), path.join(functionPath, name + '.js'))
+        fs.renameSync(path.join(functionPath, `${templateName}.js`), path.join(functionPath, `${name}.js`))
       }
       // npm install
       if (hasPackageJSON) {
@@ -376,7 +376,7 @@ async function installAddons(functionAddons = [], fnPath) {
   ])
 
   const arr = functionAddons.map(async ({ addonName, addonDidInstall }) => {
-    log(`${NETLIFYDEVLOG} installing addon: ` + chalk.yellow.inverse(addonName))
+    log(`${NETLIFYDEVLOG} installing addon: ${chalk.yellow.inverse(addonName)}`)
     try {
       const addonCreated = await createFunctionAddon({
         api,

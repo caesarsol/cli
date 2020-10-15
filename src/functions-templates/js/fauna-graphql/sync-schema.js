@@ -13,7 +13,7 @@ function createFaunaGraphQL() {
   var dataString = fs.readFileSync(path.join(__dirname, 'schema.graphql')).toString() // name of your schema file
 
   // encoded authorization header similar to https://www.npmjs.com/package/request#http-authentication
-  const token = Buffer.from(process.env.FAUNADB_SERVER_SECRET + ':').toString('base64')
+  const token = Buffer.from(`${process.env.FAUNADB_SERVER_SECRET}:`).toString('base64')
 
   var options = {
     method: 'POST',

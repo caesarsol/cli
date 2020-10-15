@@ -7,11 +7,7 @@ module.exports = function handler(event, context, callback) {
   var code = event.queryStringParameters.code
 
   // where is the data?
-  var url =
-    'https://api.netlify.com/api/v1/forms/' +
-    process.env.ROUTES_FORM_ID +
-    '/submissions/?access_token=' +
-    process.env.API_AUTH
+  var url = `https://api.netlify.com/api/v1/forms/${process.env.ROUTES_FORM_ID}/submissions/?access_token=${process.env.API_AUTH}`
 
   request(url, function (err, response, body) {
     // look for this code in our stash
@@ -21,7 +17,7 @@ module.exports = function handler(event, context, callback) {
       for (var item in routes) {
         // return the result when we find the match
         if (routes[item].data.code === code) {
-          console.log('We searched for ' + code + ' and we found ' + routes[item].data.destination)
+          console.log(`We searched for ${code} and we found ${routes[item].data.destination}`)
           return callback(null, {
             statusCode: 200,
             headers: { 'Content-Type': 'application/json' },

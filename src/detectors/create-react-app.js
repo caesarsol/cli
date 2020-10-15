@@ -19,7 +19,8 @@ module.exports = function () {
   return {
     framework: 'create-react-app',
     command: getYarnOrNPMCommand(),
-    frameworkPort: 3000, // the port that create-react-app normally outputs
+    // the port that create-react-app normally outputs
+    frameworkPort: 3000,
     env: { BROWSER: 'none', PORT: 3000 },
     stdio: ['inherit', 'pipe', 'pipe'],
     possibleArgsArrs,

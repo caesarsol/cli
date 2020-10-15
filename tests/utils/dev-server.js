@@ -8,7 +8,8 @@ const pidtree = require('pidtree')
 // each process gets a starting port based on the pid
 const rng = seedrandom(`${process.pid}`)
 function getRandomPortStart(rng) {
-  const startPort = Math.floor(rng() * 10000) + 10000 // 10000 to avoid collisions with frameworks ports
+  // 10000 to avoid collisions with frameworks ports
+  const startPort = Math.floor(rng() * 10000) + 10000
   return startPort
 }
 

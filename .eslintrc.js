@@ -26,8 +26,10 @@ module.exports = {
     // Those ESLint rules are not enabled by Prettier, ESLint recommended rules
     // nor standard JavaScript. However, they are still useful
     'array-callback-return': [2, { allowImplicit: true, checkForEach: true }],
+    'line-comment-position': 2,
     'multiline-comment-style': [2, 'separate-lines'],
     'no-else-return': [2, { allowElseIf: false }],
+    'no-inline-comments': 2,
 
     // This version of eslint-plugin-unicorn requires Node 10
     // TODO: remove after dropping Node 8 support
@@ -87,6 +89,9 @@ module.exports = {
       rules: {
         'no-undef': 0,
         'no-unused-vars': 0,
+        // Inline comments making code samples vertically shorter can be useful
+        'line-comment-position': 0,
+        'no-inline-comments': 0,
       },
     },
   ],

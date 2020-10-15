@@ -7,7 +7,7 @@ exports.handler = async function (event, context) {
   /** required for Fauna GraphQL auth */
   if (!process.env.FAUNADB_SERVER_SECRET) {
     const msg = `
-    FAUNADB_SERVER_SECRET missing. 
+    FAUNADB_SERVER_SECRET missing.
     Did you forget to install the fauna addon or forgot to run inside Netlify Dev?
     `
     console.error(msg)
@@ -16,14 +16,13 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ msg }),
     }
   }
-  const b64encodedSecret = Buffer.from(
-    process.env.FAUNADB_SERVER_SECRET + ':' // weird but they
-  ).toString('base64')
+  const b64encodedSecret = Buffer.from(process.env.FAUNADB_SERVER_SECRET + ':').toString('base64')
   const headers = { Authorization: `Basic ${b64encodedSecret}` }
 
   /** standard creation of apollo-server executable schema */
   const link = createHttpLink({
-    uri: 'https://graphql.fauna.com/graphql', // modify as you see fit
+    // modify as you see fit
+    uri: 'https://graphql.fauna.com/graphql',
     fetch,
     headers,
   })

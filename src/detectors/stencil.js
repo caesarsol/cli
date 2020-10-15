@@ -19,7 +19,8 @@ module.exports = function () {
   return {
     framework: 'stencil',
     command: getYarnOrNPMCommand(),
-    frameworkPort: 3333, // the port that stencil normally outputs
+    // the port that stencil normally outputs
+    frameworkPort: 3333,
     env: { BROWSER: 'none', PORT: 3000 },
     possibleArgsArrs,
     dist: 'www',

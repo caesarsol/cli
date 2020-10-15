@@ -85,7 +85,8 @@ async function waitForBuildFinish(api, siteId) {
 
   await pWaitFor(waitForBuildToFinish, {
     interval: 1000,
-    timeout: 1.2e6, // 20 mins,
+    // 20 mins,
+    timeout: 1.2e6,
     message: 'Timeout while waiting for deploy to finish',
   })
 

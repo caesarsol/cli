@@ -40,7 +40,7 @@ function createCallback(response) {
     if (!Number(lambdaResponse.statusCode)) {
       console.log(
         `${NETLIFYDEVERR} Your function response must have a numerical statusCode. You gave: $`,
-        lambdaResponse.statusCode
+        lambdaResponse.statusCode,
       )
       return handleErr('Incorrect function response statusCode', response)
     }
@@ -144,11 +144,11 @@ function createHandler(dir) {
     }
     const queryParams = Object.entries(request.query).reduce(
       (prev, [k, v]) => ({ ...prev, [k]: Array.isArray(v) ? v : [v] }),
-      {}
+      {},
     )
     const headers = Object.entries({ ...request.headers, 'client-ip': [remoteAddress] }).reduce(
       (prev, [k, v]) => ({ ...prev, [k]: Array.isArray(v) ? v : [v] }),
-      {}
+      {},
     )
 
     const event = {
@@ -216,16 +216,16 @@ function createFormSubmissionHandler(siteInfo) {
                   url: v.path,
                 })),
               }),
-              {}
+              {},
             )
             return resolve([
               Object.entries(Fields).reduce(
                 (prev, [name, values]) => ({ ...prev, [name]: values.length > 1 ? values : values[0] }),
-                {}
+                {},
               ),
               Object.entries(Files).reduce(
                 (prev, [name, values]) => ({ ...prev, [name]: values.length > 1 ? values : values[0] }),
-                {}
+                {},
               ),
             ])
           })
@@ -250,7 +250,7 @@ function createFormSubmissionHandler(siteInfo) {
         email:
           fields[
             Object.keys(fields).find((name) =>
-              ['email', 'mail', 'from', 'twitter', 'sender'].includes(name.toLowerCase())
+              ['email', 'mail', 'from', 'twitter', 'sender'].includes(name.toLowerCase()),
             )
           ],
         title: fields[Object.keys(fields).find((name) => ['title', 'subject'].includes(name.toLowerCase()))],
@@ -294,14 +294,14 @@ function serveFunctions(dir, siteInfo = {}) {
     bodyParser.text({
       limit: '6mb',
       type: ['text/*', 'application/json'],
-    })
+    }),
   )
   app.use(bodyParser.raw({ limit: '6mb', type: '*/*' }))
   app.use(createFormSubmissionHandler(siteInfo))
   app.use(
     expressLogging(console, {
       blacklist: ['/favicon.ico'],
-    })
+    }),
   )
 
   app.get('/favicon.ico', function (req, res) {
@@ -317,25 +317,25 @@ const getBuildFunction = ({ functionBuilder, log }) => {
   return async function build() {
     log(
       `${NETLIFYDEVLOG} Function builder ${chalk.yellow(functionBuilder.builderName)} ${chalk.magenta(
-        'building'
-      )} functions from directory ${chalk.yellow(functionBuilder.src)}`
+        'building',
+      )} functions from directory ${chalk.yellow(functionBuilder.src)}`,
     )
 
     try {
       await functionBuilder.build()
       log(
         `${NETLIFYDEVLOG} Function builder ${chalk.yellow(functionBuilder.builderName)} ${chalk.green(
-          'finished'
-        )} building functions from directory ${chalk.yellow(functionBuilder.src)}`
+          'finished',
+        )} building functions from directory ${chalk.yellow(functionBuilder.src)}`,
       )
     } catch (error) {
       const errorMessage = (error.stderr && error.stderr.toString()) || error.message
       log(
         `${NETLIFYDEVLOG} Function builder ${chalk.yellow(functionBuilder.builderName)} ${chalk.red(
-          'failed'
+          'failed',
         )} building functions from directory ${chalk.yellow(functionBuilder.src)}${
           errorMessage ? ` with error:\n${errorMessage}` : ''
-        }`
+        }`,
       )
     }
   }
@@ -349,11 +349,11 @@ const startFunctionsServer = async ({ settings, site, log, warn, errorExit, site
     if (functionBuilder) {
       log(
         `${NETLIFYDEVLOG} Function builder ${chalk.yellow(
-          functionBuilder.builderName
-        )} detected: Running npm script ${chalk.yellow(functionBuilder.npmScript)}`
+          functionBuilder.builderName,
+        )} detected: Running npm script ${chalk.yellow(functionBuilder.npmScript)}`,
       )
       warn(
-        `${NETLIFYDEVWARN} This is a beta feature, please give us feedback on how to improve at https://github.com/netlify/cli/`
+        `${NETLIFYDEVWARN} This is a beta feature, please give us feedback on how to improve at https://github.com/netlify/cli/`,
       )
 
       const debouncedBuild = debounce(getBuildFunction({ functionBuilder, log }), 300, {

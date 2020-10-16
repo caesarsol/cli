@@ -66,8 +66,8 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
   const configFiles = [
     ...new Set(
       [path.resolve(distDir, '_redirects'), path.resolve(projectDir, '_redirects')].concat(
-        configPath ? path.resolve(configPath) : []
-      )
+        configPath ? path.resolve(configPath) : [],
+      ),
     ),
   ].filter((f) => f !== projectDir)
   let rules = await parseRules(configFiles)
@@ -75,7 +75,7 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
   onChanges(configFiles, async () => {
     console.log(
       `${NETLIFYDEVLOG} Reloading redirect rules from`,
-      configFiles.filter(fs.existsSync).map((p) => path.relative(projectDir, p))
+      configFiles.filter(fs.existsSync).map((p) => path.relative(projectDir, p)),
     )
     rules = await parseRules(configFiles)
     matcher = null
@@ -103,7 +103,7 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
         req.url,
         `${req.protocol || (req.headers.scheme && req.headers.scheme + ':') || 'http:'}//${
           req.hostname || req.headers.host
-        }`
+        }`,
       )
       const cookieValues = cookie.parse(req.headers.cookie || '')
       const headers = Object.assign(
@@ -112,7 +112,7 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
           'x-language': cookieValues.nf_lang || getLanguage(req.headers),
           'x-country': cookieValues.nf_country || getCountry(req),
         },
-        req.headers
+        req.headers,
       )
 
       // Definition: https://github.com/netlify/libredirect/blob/e81bbeeff9f7c260a5fb74cad296ccc67a92325b/node/src/redirects.cpp#L28-L60

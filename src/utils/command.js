@@ -179,8 +179,8 @@ class BaseCommand extends Command {
         {
           context: this,
         },
-        opts
-      )
+        opts,
+      ),
     )
   }
 

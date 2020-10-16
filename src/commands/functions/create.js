@@ -194,8 +194,8 @@ function ensureFunctionDirExists(flags, config) {
   if (!fs.existsSync(functionsDir)) {
     this.log(
       `${NETLIFYDEVLOG} functions folder ${chalk.magenta.inverse(
-        functionsDir
-      )} specified in netlify.toml but folder not found, creating it...`
+        functionsDir,
+      )} specified in netlify.toml but folder not found, creating it...`,
     )
     fs.mkdirSync(functionsDir)
     this.log(`${NETLIFYDEVLOG} functions folder ${chalk.magenta.inverse(functionsDir)} created`)
@@ -211,7 +211,7 @@ async function downloadFromURL(flags, args, functionsDir) {
   const fnFolder = path.join(functionsDir, nameToUse)
   if (fs.existsSync(fnFolder + '.js') && fs.lstatSync(fnFolder + '.js').isFile()) {
     this.log(
-      `${NETLIFYDEVWARN}: A single file version of the function ${nameToUse} already exists at ${fnFolder}.js. Terminating without further action.`
+      `${NETLIFYDEVWARN}: A single file version of the function ${nameToUse} already exists at ${fnFolder}.js. Terminating without further action.`,
     )
     process.exit(1)
   }
@@ -232,7 +232,7 @@ async function downloadFromURL(flags, args, functionsDir) {
         .catch((error) => {
           throw new Error('Error while retrieving ' + downloadUrl + ` ${error}`)
         })
-    })
+    }),
   )
 
   this.log(`${NETLIFYDEVLOG} Installing dependencies for ${nameToUse}...`)
@@ -292,7 +292,7 @@ async function scaffoldFromTemplate(flags, args, functionsDir) {
     const pathToTemplate = path.join(templatesDir, lang, templateName)
     if (!fs.existsSync(pathToTemplate)) {
       throw new Error(
-        `there isnt a corresponding folder to the selected name, ${templateName} template is misconfigured`
+        `there isnt a corresponding folder to the selected name, ${templateName} template is misconfigured`,
       )
     }
 

@@ -21,7 +21,10 @@ module.exports = {
     'object-shorthand': 2,
     'require-await': 2,
     'no-unused-vars': [2, {}],
+
+    // The autofix makes it impossible to use those in debugging
     'ava/no-skip-test': 0,
+    'ava/no-only-test': 0,
 
     // Those ESLint rules are not enabled by Prettier, ESLint recommended rules
     // nor standard JavaScript. However, they are still useful

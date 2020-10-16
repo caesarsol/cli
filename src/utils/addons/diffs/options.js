@@ -1,4 +1,3 @@
-/* eslint prefer-template: 0 */
 const chalk = require('chalk')
 const ansiStyles = require('ansi-styles')
 

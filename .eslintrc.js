@@ -13,9 +13,11 @@ module.exports = {
     'standard',
     'prettier',
     'prettier/standard',
+    'plugin:eslint-comments/recommended',
     'plugin:ava/recommended',
     'plugin:you-dont-need-lodash-underscore/all',
   ],
+  reportUnusedDisableDirectives: true,
   rules: {
     'no-process-exit': 0,
     'object-shorthand': 2,
@@ -28,6 +30,12 @@ module.exports = {
     'array-callback-return': [2, { allowImplicit: true, checkForEach: true }],
     'multiline-comment-style': [2, 'separate-lines'],
     'no-else-return': [2, { allowElseIf: false }],
+
+    'eslint-comments/no-unused-disable': 0,
+    'eslint-comments/no-use': [
+      2,
+      { allow: ['eslint-disable-next-line', 'eslint-disable', 'eslint-enable', 'eslint-env'] },
+    ],
 
     // This version of eslint-plugin-unicorn requires Node 10
     // TODO: remove after dropping Node 8 support

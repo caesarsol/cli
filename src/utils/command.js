@@ -263,7 +263,7 @@ class BaseCommand extends Command {
   }
 }
 
-function getAuthArg(cliArgs) {
+const getAuthArg = function (cliArgs) {
   // If deploy command. Support shorthand 'a' flag
   if (cliArgs && cliArgs._ && cliArgs._[0] === 'deploy') {
     return cliArgs.auth || cliArgs.a

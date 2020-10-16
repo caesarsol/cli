@@ -5,7 +5,7 @@ const dotenv = require('dotenv')
 const filterObject = require('filter-obj')
 const { isFileAsync, readFileAsync } = require('../lib/fs')
 
-async function getEnvSettings({ projectDir, warn }) {
+const getEnvSettings = async function ({ projectDir, warn }) {
   const dotenvFiles = ['.env.development', '.env']
   const results = await Promise.all(
     dotenvFiles.map(async (file) => {

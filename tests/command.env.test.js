@@ -35,7 +35,7 @@ const ENV_FILE_NAME = '.env'
 const REPLACE_ENV_FILE_NAME = '.env.replace'
 const FAIL_ENV_FILE_NAME = '.env.unknown' // file which should result in error
 
-async function injectNetlifyToml(builder) {
+const injectNetlifyToml = async function (builder) {
   const builderWithToml = builder.withNetlifyToml({
     config: {
       build: {
@@ -47,14 +47,14 @@ async function injectNetlifyToml(builder) {
   return builderWithToml
 }
 
-function checkResultState({ t, state, result }) {
+const checkResultState = function ({ t, state, result }) {
   const expectedPairs = Object.entries(state)
   expectedPairs.forEach(([key, value]) => {
     t.is(result[key], value)
   })
 }
 
-function getArgsFromState(state) {
+const getArgsFromState = function (state) {
   return Object.entries(state)[0]
 }
 

@@ -1,7 +1,7 @@
 const stripAnsi = require('strip-ansi')
 const callCli = require('./call-cli')
 
-function generateSiteName(prefix) {
+const generateSiteName = function (prefix) {
   const randomString = Math.random()
     .toString(36)
     .replace(/[^a-z]+/g, '')
@@ -9,11 +9,11 @@ function generateSiteName(prefix) {
   return `${prefix}${randomString}`
 }
 
-async function listAccounts() {
+const listAccounts = async function () {
   return JSON.parse(await callCli(['api', 'listAccountsForUser']))
 }
 
-async function createLiveTestSite(siteName) {
+const createLiveTestSite = async function (siteName) {
   console.log(`Creating new site for tests: ${siteName}`)
   const accounts = await listAccounts()
   if (!Array.isArray(accounts) || accounts.length <= 0) {

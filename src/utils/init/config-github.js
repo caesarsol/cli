@@ -11,8 +11,7 @@ const { makeNetlifyTOMLtemplate } = require('./netlify-toml-template')
 
 const UA = 'Netlify CLI ' + version
 
-module.exports = configGithub
-async function configGithub(ctx, site, repo) {
+module.exports = async function configGithub(ctx, site, repo) {
   const { api, globalConfig } = ctx.netlify
   const current = globalConfig.get('userId')
 

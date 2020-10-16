@@ -576,7 +576,7 @@ DeployCommand.flags = {
   ...DeployCommand.flags,
 }
 
-function deployProgressCb() {
+const deployProgressCb = function () {
   const events = {}
   // statusObj: {
   //         type: name-of-step

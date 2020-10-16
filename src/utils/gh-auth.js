@@ -7,9 +7,7 @@ const openBrowser = require('./open-browser')
 const http = require('http')
 const getPort = require('get-port')
 
-module.exports = getGitHubToken
-
-async function getGitHubToken({ opts, log }) {
+module.exports = async function getGitHubToken({ opts, log }) {
   log('')
 
   opts = {
@@ -19,7 +17,7 @@ async function getGitHubToken({ opts, log }) {
     ...opts,
   }
 
-  async function promptForOTP() {
+  const promptForOTP = async function () {
     const { otp } = await inquirer.prompt([
       {
         type: 'input',

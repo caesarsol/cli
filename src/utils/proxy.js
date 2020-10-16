@@ -18,20 +18,20 @@ const { parseHeadersFile, objectForPath } = require('./headers')
 const { NETLIFYDEVLOG, NETLIFYDEVWARN } = require('./logo')
 const { readFileAsync, fileExistsAsync, isFileAsync } = require('../lib/fs.js')
 
-function isInternal(url) {
+const isInternal = function (url) {
   return url.startsWith('/.netlify/')
 }
-function isFunction(functionsPort, url) {
+const isFunction = function (functionsPort, url) {
   return functionsPort && url.match(/^\/.netlify\/functions\/.+/)
 }
 
-function addonUrl(addonUrls, req) {
+const addonUrl = function (addonUrls, req) {
   const m = req.url.match(/^\/.netlify\/([^/]+)(\/.*)/)
   const addonUrl = m && addonUrls[m[1]]
   return addonUrl ? `${addonUrl}${m[2]}` : null
 }
 
-async function getStatic(pathname, publicFolder) {
+const getStatic = async function (pathname, publicFolder) {
   const alternatives = [pathname, ...alternativePathsFor(pathname)].map((p) => path.resolve(publicFolder, p.slice(1)))
 
   const file = await locatePath(alternatives)
@@ -42,15 +42,15 @@ async function getStatic(pathname, publicFolder) {
   return `/${path.relative(publicFolder, file)}`
 }
 
-function isExternal(match) {
+const isExternal = function (match) {
   return match.to && match.to.match(/^https?:\/\//)
 }
 
-function isRedirect(match) {
+const isRedirect = function (match) {
   return match.status && match.status >= 300 && match.status <= 400
 }
 
-async function render404(publicFolder) {
+const render404 = async function (publicFolder) {
   const maybe404Page = path.resolve(publicFolder, '404.html')
   try {
     const isFile = await isFileAsync(maybe404Page)
@@ -65,7 +65,7 @@ async function render404(publicFolder) {
 // Used as an optimization to avoid dual lookups for missing assets
 const assetExtensionRegExp = /\.(html?|png|jpg|js|css|svg|gif|ico|woff|woff2)$/
 
-function alternativePathsFor(url) {
+const alternativePathsFor = function (url) {
   const paths = []
   if (url[url.length - 1] === '/') {
     const end = url.length - 1
@@ -85,7 +85,7 @@ function alternativePathsFor(url) {
   return paths
 }
 
-async function serveRedirect({ req, res, proxy, match, options }) {
+const serveRedirect = async function ({ req, res, proxy, match, options }) {
   if (!match) return proxy.web(req, res, options)
 
   options = options || req.proxyOptions || {}
@@ -229,7 +229,7 @@ async function serveRedirect({ req, res, proxy, match, options }) {
   return proxy.web(req, res, options)
 }
 
-function initializeProxy(port, distDir, projectDir) {
+const initializeProxy = function (port, distDir, projectDir) {
   const proxy = httpProxy.createProxyServer({
     selfHandleResponse: true,
     target: {
@@ -296,7 +296,7 @@ function initializeProxy(port, distDir, projectDir) {
   return handlers
 }
 
-async function startProxy(settings = {}, addonUrls, configPath, projectDir) {
+const startProxy = async function (settings = {}, addonUrls, configPath, projectDir) {
   const functionsServer = settings.functionsPort ? `http://localhost:${settings.functionsPort}` : null
 
   const proxy = initializeProxy(settings.frameworkPort, settings.dist, projectDir)

@@ -5,7 +5,7 @@ const faunadb = require('faunadb')
 
 const q = faunadb.query
 
-function createFaunaDB() {
+const createFaunaDB = function () {
   if (!process.env.FAUNADB_SERVER_SECRET) {
     console.log('No FAUNADB_SERVER_SECRET in environment, skipping DB setup')
   }

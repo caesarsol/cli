@@ -1,7 +1,7 @@
 const chalk = require('chalk')
 const AsciiTable = require('ascii-table')
 
-function missingValues(values, manifest) {
+const missingValues = function (values, manifest) {
   const display = values
     .map((item) => {
       const itemDisplay = chalk.redBright.bold(`${item}`)
@@ -12,7 +12,7 @@ function missingValues(values, manifest) {
   console.log(display)
 }
 
-function configValues(addonName, configValues, currentValue) {
+const configValues = function (addonName, configValues, currentValue) {
   const table = new AsciiTable(`${addonName} add-on settings`)
 
   const tableHeader = currentValue

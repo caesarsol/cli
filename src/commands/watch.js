@@ -80,19 +80,10 @@ SitesWatchCommand.description = `Watch for site deploy to finish`
 
 SitesWatchCommand.examples = [`netlify watch`, `git push && netlify watch`]
 
-async function waitForBuildFinish(api, siteId) {
+const waitForBuildFinish = async function (api, siteId) {
   let firstPass = true
 
-  await pWaitFor(waitForBuildToFinish, {
-    interval: 1000,
-    timeout: 1.2e6, // 20 mins,
-    message: 'Timeout while waiting for deploy to finish',
-  })
-
-  // return only when build done or timeout happens
-  return firstPass
-
-  async function waitForBuildToFinish() {
+  const waitForBuildToFinish = async function () {
     const builds = await api.listSiteBuilds({ siteId })
     const currentBuilds = builds.filter((build) => {
       // build.error
@@ -109,6 +100,15 @@ async function waitForBuildFinish(api, siteId) {
     firstPass = false
     return false
   }
+
+  await pWaitFor(waitForBuildToFinish, {
+    interval: 1000,
+    timeout: 1.2e6, // 20 mins,
+    message: 'Timeout while waiting for deploy to finish',
+  })
+
+  // return only when build done or timeout happens
+  return firstPass
 }
 
 module.exports = SitesWatchCommand

@@ -69,7 +69,7 @@ module.exports = FunctionsCreateCommand
  */
 
 // prompt for a name if name not supplied
-async function getNameFromArgs(args, flags, defaultName) {
+const getNameFromArgs = async function (args, flags, defaultName) {
   if (flags.name) {
     if (args.name) {
       throw new Error('function name specified in both flag and arg format, pick one')
@@ -96,10 +96,8 @@ async function getNameFromArgs(args, flags, defaultName) {
 }
 
 // pick template from our existing templates
-async function pickTemplate() {
-  // lazy loading on purpose
+const pickTemplate = async function () {
   inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
-  const fuzzy = require('fuzzy')
   // doesnt scale but will be ok for now
   const [
     jsreg,
@@ -150,40 +148,43 @@ async function pickTemplate() {
     },
   })
   return chosentemplate
-  function filterRegistry(registry, input) {
-    const temp = registry.map((x) => x.name + x.description)
-    const filteredTemplates = fuzzy.filter(input, temp)
-    const filteredTemplateNames = new Set(filteredTemplates.map((x) => (input ? x.string : x)))
-    return registry
-      .filter((t) => filteredTemplateNames.has(t.name + t.description))
-      .map((t) => {
-        // add the score
-        const { score } = filteredTemplates.find((f) => f.string === t.name + t.description)
-        t.score = score
-        return t
-      })
-  }
-  function formatRegistryArrayForInquirer(lang) {
-    const folderNames = fs.readdirSync(path.join(templatesDir, lang))
-    const registry = folderNames
-      .filter((x) => !x.endsWith('.md')) // filter out markdown files
-      .map((name) => require(path.join(templatesDir, lang, name, '.netlify-function-template.js')))
-      .sort((a, b) => (a.priority || 999) - (b.priority || 999))
-      .map((t) => {
-        t.lang = lang
-        return {
-          // confusing but this is the format inquirer wants
-          name: `[${t.name}] ` + t.description,
-          value: t,
-          short: lang + '-' + t.name,
-        }
-      })
-    return registry
-  }
+}
+
+const filterRegistry = function (registry, input) {
+  // lazy loading on purpose
+  const fuzzy = require('fuzzy')
+  const temp = registry.map((x) => x.name + x.description)
+  const filteredTemplates = fuzzy.filter(input, temp)
+  const filteredTemplateNames = new Set(filteredTemplates.map((x) => (input ? x.string : x)))
+  return registry
+    .filter((t) => filteredTemplateNames.has(t.name + t.description))
+    .map((t) => {
+      // add the score
+      const { score } = filteredTemplates.find((f) => f.string === t.name + t.description)
+      t.score = score
+      return t
+    })
+}
+const formatRegistryArrayForInquirer = function (lang) {
+  const folderNames = fs.readdirSync(path.join(templatesDir, lang))
+  const registry = folderNames
+    .filter((x) => !x.endsWith('.md')) // filter out markdown files
+    .map((name) => require(path.join(templatesDir, lang, name, '.netlify-function-template.js')))
+    .sort((a, b) => (a.priority || 999) - (b.priority || 999))
+    .map((t) => {
+      t.lang = lang
+      return {
+        // confusing but this is the format inquirer wants
+        name: `[${t.name}] ` + t.description,
+        value: t,
+        short: lang + '-' + t.name,
+      }
+    })
+  return registry
 }
 
 /* get functions dir (and make it if necessary) */
-function ensureFunctionDirExists(context, flags, config) {
+const ensureFunctionDirExists = function (context, flags, config) {
   const functionsDir = config.build && config.build.functions
   if (!functionsDir) {
     context.log(`${NETLIFYDEVLOG} No functions folder specified in netlify.toml`)
@@ -202,7 +203,7 @@ function ensureFunctionDirExists(context, flags, config) {
 }
 
 // Download files from a given github URL
-async function downloadFromURL(context, flags, args, functionsDir) {
+const downloadFromURL = async function (context, flags, args, functionsDir) {
   const folderContents = await readRepoURL(flags.url)
   const [functionName] = flags.url.split('/').slice(-1)
   const nameToUse = await getNameFromArgs(args, flags, functionName)
@@ -252,7 +253,7 @@ async function downloadFromURL(context, flags, args, functionsDir) {
   }
 }
 
-function installDeps(functionPath) {
+const installDeps = function (functionPath) {
   return new Promise((resolve) => {
     cp.exec('npm i', { cwd: path.join(functionPath) }, () => {
       resolve()
@@ -261,7 +262,7 @@ function installDeps(functionPath) {
 }
 
 // no --url flag specified, pick from a provided template
-async function scaffoldFromTemplate(context, flags, args, functionsDir) {
+const scaffoldFromTemplate = async function (context, flags, args, functionsDir) {
   const chosentemplate = await pickTemplate() // pull the rest of the metadata from the template
   if (chosentemplate === 'url') {
     const { chosenurl } = await inquirer.prompt([
@@ -335,7 +336,7 @@ async function scaffoldFromTemplate(context, flags, args, functionsDir) {
   }
 }
 
-async function createFunctionAddon({ api, addons, siteId, addonName, siteData, log, error }) {
+const createFunctionAddon = async function ({ api, addons, siteId, addonName, siteData, log, error }) {
   try {
     const addon = getCurrentAddon({ addons, addonName })
     if (addon && addon.id) {
@@ -354,7 +355,7 @@ async function createFunctionAddon({ api, addons, siteId, addonName, siteData, l
   }
 }
 
-async function installAddons(context, functionAddons = [], fnPath) {
+const installAddons = async function (context, functionAddons = [], fnPath) {
   if (functionAddons.length === 0) {
     return
   }
@@ -408,7 +409,7 @@ async function installAddons(context, functionAddons = [], fnPath) {
 
 // we used to allow for a --dir command,
 // but have retired that to force every scaffolded function to be a folder
-function ensureFunctionPathIsOk(context, functionsDir, name) {
+const ensureFunctionPathIsOk = function (context, functionsDir, name) {
   const functionPath = path.join(functionsDir, name)
   if (fs.existsSync(functionPath)) {
     context.log(`${NETLIFYDEVLOG} Function ${functionPath} already exists, cancelling...`)

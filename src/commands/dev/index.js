@@ -16,7 +16,7 @@ const { getEnvSettings } = require('../../utils/env')
 const { startProxy } = require('../../utils/proxy')
 const { startForwardProxy } = require('../../utils/traffic-mesh')
 
-async function startFrameworkServer({ settings, log, exit }) {
+const startFrameworkServer = async function ({ settings, log, exit }) {
   if (settings.noCmd) {
     const StaticServer = require('static-server')
 
@@ -57,7 +57,7 @@ async function startFrameworkServer({ settings, log, exit }) {
 
   process.stdin.pipe(process.stdin)
 
-  function handleProcessExit(code) {
+  const handleProcessExit = function (code) {
     log(
       code > 0 ? NETLIFYDEVERR : NETLIFYDEVWARN,
       `"${[settings.command, ...settings.args].join(' ')}" exited with code ${code}. Shutting down Netlify Dev server`

@@ -64,13 +64,13 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
         configPath ? path.resolve(configPath) : []
       )
     ),
-  ].filter((f) => f !== projectDir)
+  ].filter((configFile) => configFile !== projectDir)
   let rules = await parseRules(configFiles)
 
   onChanges(configFiles, async () => {
     console.log(
       `${NETLIFYDEVLOG} Reloading redirect rules from`,
-      configFiles.filter(fs.existsSync).map((p) => path.relative(projectDir, p))
+      configFiles.filter(fs.existsSync).map((configFile) => path.relative(projectDir, configFile))
     )
     rules = await parseRules(configFiles)
     matcher = null

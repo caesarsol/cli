@@ -28,7 +28,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(server.url).then((r) => r.text())
+        const response = await fetch(server.url).then((res) => res.text())
         t.is(response, '<h1>⊂◉‿◉つ</h1>')
       })
     })
@@ -52,7 +52,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/.netlify/functions/timeout`).then((r) => r.text())
+        const response = await fetch(`${server.url}/.netlify/functions/timeout`).then((res) => res.text())
         t.is(response, 'ping')
       })
     })
@@ -73,7 +73,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/.netlify/functions/echo`).then((r) => r.text())
+        const response = await fetch(`${server.url}/.netlify/functions/echo`).then((res) => res.text())
         t.is(response, 'ping')
       })
     })
@@ -97,7 +97,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/.netlify/functions/env`).then((r) => r.text())
+        const response = await fetch(`${server.url}/.netlify/functions/env`).then((res) => res.text())
         t.is(response, 'FROM_DEV_FILE')
       })
     })
@@ -118,7 +118,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, env: { TEST: 'FROM_PROCESS_ENV' }, args }, async (server) => {
-        const response = await fetch(`${server.url}/.netlify/functions/env`).then((r) => r.text())
+        const response = await fetch(`${server.url}/.netlify/functions/env`).then((res) => res.text())
         t.is(response, 'FROM_PROCESS_ENV')
       })
     })
@@ -142,7 +142,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, env: { TEST: 'FROM_PROCESS_ENV' }, args }, async (server) => {
-        const response = await fetch(`${server.url}/.netlify/functions/env`).then((r) => r.text())
+        const response = await fetch(`${server.url}/.netlify/functions/env`).then((res) => res.text())
         t.is(response, 'FROM_PROCESS_ENV')
       })
     })
@@ -170,7 +170,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/api/ping`).then((r) => r.text())
+        const response = await fetch(`${server.url}/api/ping`).then((res) => res.text())
         t.is(response, 'ping')
       })
     })
@@ -198,7 +198,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/api/echo?ding=dong`).then((r) => r.json())
+        const response = await fetch(`${server.url}/api/echo?ding=dong`).then((res) => res.json())
         t.is(response.body, undefined)
         t.deepEqual(response.headers, {
           'accept': '*/*',
@@ -242,7 +242,7 @@ testMatrix.forEach(({ args }) => {
         const response = await fetch(`${server.url}/api/echo?ding=dong`, {
           method: 'POST',
           body: 'some=thing',
-        }).then((r) => r.json())
+        }).then((res) => res.json())
 
         t.is(response.body, 'some=thing')
         t.deepEqual(response.headers, {
@@ -325,7 +325,7 @@ testMatrix.forEach(({ args }) => {
           method: 'POST',
           body: form.getBuffer(),
           headers: form.getHeaders(),
-        }).then((r) => r.json())
+        }).then((res) => res.json())
 
         const formBoundary = form.getBoundary()
 
@@ -394,9 +394,9 @@ testMatrix.forEach(({ args }) => {
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
         const response1 = await fetch(
           `${server.url}/.netlify/functions/echo?category[SOMETHING][]=something`
-        ).then((r) => r.json())
-        const response2 = await fetch(`${server.url}/.netlify/functions/echo?category=one&category=two`).then((r) =>
-          r.json()
+        ).then((res) => res.json())
+        const response2 = await fetch(`${server.url}/.netlify/functions/echo?category=one&category=two`).then((res) =>
+          res.json()
         )
 
         t.deepEqual(response1.queryStringParameters, { 'category[SOMETHING][]': 'something' })
@@ -436,7 +436,7 @@ testMatrix.forEach(({ args }) => {
           method: 'POST',
           body: form.getBuffer(),
           headers: form.getHeaders(),
-        }).then((r) => r.json())
+        }).then((res) => res.json())
 
         const body = JSON.parse(response.body)
 
@@ -511,7 +511,7 @@ testMatrix.forEach(({ args }) => {
           headers: {
             'content-type': 'text/plain',
           },
-        }).then((r) => r.text())
+        }).then((res) => res.text())
         t.is(response, 'Method Not Allowed')
       })
     })
@@ -537,7 +537,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/foo?ping=pong`).then((r) => r.text())
+        const response = await fetch(`${server.url}/foo?ping=pong`).then((res) => res.text())
         t.is(response, '<html><h1>foo')
       })
     })
@@ -563,7 +563,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/foo`).then((r) => r.text())
+        const response = await fetch(`${server.url}/foo`).then((res) => res.text())
         t.is(response, '<html><h1>not-foo')
       })
     })
@@ -589,7 +589,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/foo.html`).then((r) => r.text())
+        const response = await fetch(`${server.url}/foo.html`).then((res) => res.text())
         t.is(response, '<html><h1>foo')
       })
     })
@@ -615,7 +615,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/foo.html`).then((r) => r.text())
+        const response = await fetch(`${server.url}/foo.html`).then((res) => res.text())
         t.is(response, '<html><h1>not-foo')
       })
     })
@@ -641,11 +641,11 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response1 = await fetch(`${server.url}/not-foo`).then((r) => r.text())
-        const response2 = await fetch(`${server.url}/not-foo/`).then((r) => r.text())
+        const response1 = await fetch(`${server.url}/not-foo`).then((res) => res.text())
+        const response2 = await fetch(`${server.url}/not-foo/`).then((res) => res.text())
 
         // TODO: check why this doesn't redirect
-        const response3 = await fetch(`${server.url}/not-foo/index.html`).then((r) => r.text())
+        const response3 = await fetch(`${server.url}/not-foo/index.html`).then((res) => res.text())
 
         t.is(response1, '<html><h1>foo')
         t.is(response2, '<html><h1>foo')
@@ -664,7 +664,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const response = await fetch(`${server.url}/non-existent`).then((r) => r.text())
+        const response = await fetch(`${server.url}/non-existent`).then((res) => res.text())
         t.is(response, '<h1>404 - Page not found</h1>')
       })
     })
@@ -813,7 +813,7 @@ testMatrix.forEach(({ args }) => {
       await builder.buildAsync()
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
-        const getResponse = await fetch(`${server.url}/api/ping`).then((r) => r.json())
+        const getResponse = await fetch(`${server.url}/api/ping`).then((res) => res.json())
         t.deepEqual(getResponse, { body: {}, method: 'GET', url: '/ping' })
 
         const postResponse = await fetch(`${server.url}/api/ping`, {
@@ -822,7 +822,7 @@ testMatrix.forEach(({ args }) => {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: 'param=value',
-        }).then((r) => r.json())
+        }).then((res) => res.json())
         t.deepEqual(postResponse, { body: { param: 'value' }, method: 'POST', url: '/ping' })
       })
 
@@ -918,8 +918,8 @@ testMatrix.forEach(({ args }) => {
 
       await withDevServer({ cwd: builder.directory, args }, async (server) => {
         const [spaces, brackets] = await Promise.all([
-          fetch(`${server.url}/files/file with spaces`).then((r) => r.text()),
-          fetch(`${server.url}/files/[file_with_brackets]`).then((r) => r.text()),
+          fetch(`${server.url}/files/file with spaces`).then((res) => res.text()),
+          fetch(`${server.url}/files/[file_with_brackets]`).then((res) => res.text()),
         ])
 
         t.is(spaces, '<html>file with spaces</html>')

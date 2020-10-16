@@ -23,7 +23,7 @@ test.after(async (t) => {
 
 test('homepage', async (t) => {
   const { url } = t.context.server
-  const response = await fetch(`${url}/`).then((r) => r.text())
+  const response = await fetch(`${url}/`).then((res) => res.text())
 
   t.regex(response, /Web site created using create-react-app/)
 })
@@ -91,7 +91,7 @@ test('robots.txt', async (t) => {
 
 test('functions rewrite echo without body', async (t) => {
   const { url, host, port } = t.context.server
-  const response = await fetch(`${url}/api/echo?ding=dong`).then((r) => r.json())
+  const response = await fetch(`${url}/api/echo?ding=dong`).then((res) => res.json())
 
   t.is(response.body, undefined)
   t.deepEqual(response.headers, {
@@ -114,7 +114,7 @@ test('functions rewrite echo with body', async (t) => {
   const response = await fetch(`${url}/api/echo?ding=dong`, {
     method: 'POST',
     body: 'some=thing',
-  }).then((r) => r.json())
+  }).then((res) => res.json())
 
   t.is(response.body, 'some=thing')
   t.deepEqual(response.headers, {
@@ -136,7 +136,7 @@ test('functions rewrite echo with body', async (t) => {
 
 test('functions echo with multiple query params', async (t) => {
   const { url, host, port } = t.context.server
-  const response = await fetch(`${url}/.netlify/functions/echo?category=a&category=b`).then((r) => r.json())
+  const response = await fetch(`${url}/.netlify/functions/echo?category=a&category=b`).then((res) => res.json())
 
   t.deepEqual(response.headers, {
     'accept': '*/*',

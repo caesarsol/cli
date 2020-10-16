@@ -63,8 +63,8 @@ module.exports = async function linkPrompts(context, flags = {}) {
         )
       }
 
-      const matchingSites = sites.filter((s) => {
-        const buildSettings = s.build_settings || {}
+      const matchingSites = sites.filter((site) => {
+        const buildSettings = site.build_settings || {}
         return repoUrl === buildSettings.repo_url
       })
 

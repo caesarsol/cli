@@ -20,6 +20,7 @@ module.exports = {
     // nor standard JavaScript. However, they are still useful
     'array-callback-return': [2, { allowImplicit: true, checkForEach: true }],
     'func-name-matching': [2, { considerPropertyDescriptor: true }],
+    'id-length': [2, { exceptions: ['t', '_'] }],
     'max-params': [2, { max: 4 }],
     'multiline-comment-style': [2, 'separate-lines'],
     'no-else-return': [2, { allowElseIf: false }],

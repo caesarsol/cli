@@ -7,7 +7,7 @@ exports.handler = async function (event, context) {
   /** required for Fauna GraphQL auth */
   if (!process.env.FAUNADB_SERVER_SECRET) {
     const msg = `
-    FAUNADB_SERVER_SECRET missing. 
+    FAUNADB_SERVER_SECRET missing.
     Did you forget to install the fauna addon or forgot to run inside Netlify Dev?
     `
     console.error(msg)

@@ -98,7 +98,7 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
   }
 
   return function (req, res, next) {
-    getMatcher().then((matcher) => {
+    getMatcher().then((matcherFunc) => {
       const reqUrl = new url.URL(
         req.url,
         `${req.protocol || (req.headers.scheme && req.headers.scheme + ':') || 'http:'}//${
@@ -126,7 +126,7 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
         getHeader: (name) => headers[name.toLowerCase()] || '',
         getCookie: (key) => cookieValues[key] || '',
       }
-      const match = matcher.match(matchReq)
+      const match = matcherFunc.match(matchReq)
       if (match) return next(match)
 
       next()

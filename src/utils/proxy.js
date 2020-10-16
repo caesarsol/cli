@@ -1,6 +1,6 @@
 const path = require('path')
 const http = require('http')
-const url = require('url')
+const { URL, URLSearchParams } = require('url')
 const httpProxy = require('http-proxy')
 const { createProxyMiddleware } = require('http-proxy-middleware')
 const cookie = require('cookie')
@@ -24,7 +24,7 @@ function isFunction(functionsPort, url) {
   return functionsPort && url.match(/^\/.netlify\/functions\/.+/)
 }
 
-function addonUrl(addonUrls, req) {
+function getAddonUrl(addonUrls, req) {
   const m = req.url.match(/^\/.netlify\/([^/]+)(\/.*)/)
   const addonUrl = m && addonUrls[m[1]]
   return addonUrl ? `${addonUrl}${m[2]}` : null
@@ -103,7 +103,7 @@ async function serveRedirect(req, res, proxy, match, options) {
   if (isFunction(options.functionsPort, req.url)) {
     return proxy.web(req, res, { target: options.functionsServer })
   }
-  const urlForAddons = addonUrl(options.addonUrls, req)
+  const urlForAddons = getAddonUrl(options.addonUrls, req)
   if (urlForAddons) {
     return proxy.web(req, res, { target: urlForAddons })
   }
@@ -149,7 +149,7 @@ async function serveRedirect(req, res, proxy, match, options) {
     }
   }
 
-  const reqUrl = new url.URL(
+  const reqUrl = new URL(
     req.url,
     `${req.protocol || (req.headers.scheme && req.headers.scheme + ':') || 'http:'}//${
       req.headers.host || req.hostname
@@ -164,10 +164,10 @@ async function serveRedirect(req, res, proxy, match, options) {
   }
 
   if (match.force || !staticFile || !options.framework || req.method === 'POST') {
-    const dest = new url.URL(match.to, `${reqUrl.protocol}//${reqUrl.host}`)
+    const dest = new URL(match.to, `${reqUrl.protocol}//${reqUrl.host}`)
 
     // Use query params of request URL as base, so that, destination query params can supersede
-    const urlParams = new url.URLSearchParams(reqUrl.searchParams)
+    const urlParams = new URLSearchParams(reqUrl.searchParams)
     dest.searchParams.forEach((val, key) => {
       urlParams.set(key, val)
     })
@@ -220,9 +220,9 @@ async function serveRedirect(req, res, proxy, match, options) {
       req.headers['x-netlify-original-pathname'] = reqUrl.pathname
       return proxy.web(req, res, { target: options.functionsServer })
     }
-    const urlForAddons = addonUrl(options.addonUrls, req)
-    if (urlForAddons) {
-      return proxy.web(req, res, { target: urlForAddons })
+    const addonUrl = getAddonUrl(options.addonUrls, req)
+    if (addonUrl) {
+      return proxy.web(req, res, { target: addonUrl })
     }
 
     return proxy.web(req, res, { ...options, status })
@@ -267,7 +267,7 @@ function initializeProxy(port, distDir, projectDir) {
         return serveRedirect(req, res, handlers, req.proxyOptions.match, req.proxyOptions)
       }
     }
-    const requestURL = new url.URL(req.url, `http://${req.headers.host || 'localhost'}`)
+    const requestURL = new URL(req.url, `http://${req.headers.host || 'localhost'}`)
     const pathHeaderRules = objectForPath(headerRules, requestURL.pathname)
     if (!isEmpty(pathHeaderRules)) {
       Object.entries(pathHeaderRules).forEach(([key, val]) => {
@@ -285,7 +285,7 @@ function initializeProxy(port, distDir, projectDir) {
 
   const handlers = {
     web: (req, res, options) => {
-      const requestURL = new url.URL(req.url, 'http://localhost')
+      const requestURL = new URL(req.url, 'http://localhost')
       req.proxyOptions = options
       req.alternativePaths = alternativePathsFor(requestURL.pathname).map((p) => p + requestURL.search)
       // Ref: https://nodejs.org/api/net.html#net_socket_remoteaddress
@@ -316,7 +316,7 @@ async function startProxy(settings = {}, addonUrls, configPath, projectDir) {
     if (isFunction(settings.functionsPort, req.url)) {
       return proxy.web(req, res, { target: functionsServer })
     }
-    const urlForAddons = addonUrl(addonUrls, req)
+    const urlForAddons = getAddonUrl(addonUrls, req)
     if (urlForAddons) {
       return proxy.web(req, res, { target: urlForAddons })
     }

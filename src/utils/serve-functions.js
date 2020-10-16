@@ -264,11 +264,11 @@ function createFormSubmissionHandler(siteInfo) {
         created_at: new Date().toISOString(),
         human_fields: Object.entries({
           ...fields,
-          ...Object.entries(files).reduce((prev, [name, data]) => ({ ...prev, [name]: data.url }), {}),
+          ...Object.entries(files).reduce((prev, [name, { url }]) => ({ ...prev, [name]: url }), {}),
         }).reduce((prev, [key, val]) => ({ ...prev, [capitalize(key)]: val }), {}),
         ordered_human_fields: Object.entries({
           ...fields,
-          ...Object.entries(files).reduce((prev, [name, data]) => ({ ...prev, [name]: data.url }), {}),
+          ...Object.entries(files).reduce((prev, [name, { url }]) => ({ ...prev, [name]: url }), {}),
         }).map(([key, val]) => ({ title: capitalize(key), name: key, value: val })),
         site_url: siteInfo.ssl_url,
       },

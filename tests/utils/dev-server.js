@@ -7,12 +7,12 @@ const pidtree = require('pidtree')
 
 // each process gets a starting port based on the pid
 const rng = seedrandom(`${process.pid}`)
-function getRandomPortStart(rng) {
+function getRandomPortStart() {
   const startPort = Math.floor(rng() * 10000) + 10000 // 10000 to avoid collisions with frameworks ports
   return startPort
 }
 
-let currentPort = getRandomPortStart(rng)
+let currentPort = getRandomPortStart()
 
 const startServer = async ({ cwd, env = {}, args = [] }) => {
   const tryPort = currentPort++
@@ -43,6 +43,7 @@ const startServer = async ({ cwd, env = {}, args = [] }) => {
               }
             })
             ps.kill()
+            // eslint-disable-next-line no-shadow
             await Promise.race([ps.catch(() => {}), new Promise((resolve) => setTimeout(resolve, 1000))])
           },
         })

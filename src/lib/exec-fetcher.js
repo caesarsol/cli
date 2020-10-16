@@ -33,6 +33,7 @@ const isExe = (mode, gid, uid) => {
   const isGroup = gid ? process.getgid && gid === process.getgid() : true
   const isUser = uid ? process.getuid && uid === process.getuid() : true
 
+  // eslint-disable-next-line no-magic-numbers
   return Boolean(mode & 0o0001 || (mode & 0o0010 && isGroup) || (mode & 0o0100 && isUser))
 }
 

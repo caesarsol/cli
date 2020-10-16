@@ -3,12 +3,15 @@ exports.validateEmail = (ctx, str) => {
     throw new TypeError(`${ctx} must be a string`)
   }
 
-  exports.validateLength(ctx, str, 5, 30)
+  exports.validateLength(ctx, str, EMAIL_MIN_LENGTH, EMAIL_MAX_LENGTH)
 
   if (!/^[\w.-]+@[\w.-]+\.\w+$/.test(str)) {
     throw new TypeError(`${ctx} is not an email address`)
   }
 }
+
+const EMAIL_MIN_LENGTH = 5
+const EMAIL_MAX_LENGTH = 30
 
 exports.validateLength = (ctx, str, ...args) => {
   let min, max

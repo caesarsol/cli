@@ -28,6 +28,35 @@ module.exports = {
     'array-callback-return': [2, { allowImplicit: true, checkForEach: true }],
     'multiline-comment-style': [2, 'separate-lines'],
     'no-else-return': [2, { allowElseIf: false }],
+    'no-magic-numbers': [
+      2,
+      {
+        ignore: [
+          // Common small numbers
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          // HTTP statuses
+          200,
+          201,
+          204,
+          300,
+          301,
+          400,
+          401,
+          403,
+          404,
+          410,
+          422,
+          500,
+        ],
+        enforceConst: true,
+        detectObjects: true,
+      },
+    ],
 
     // This version of eslint-plugin-unicorn requires Node 10
     // TODO: remove after dropping Node 8 support

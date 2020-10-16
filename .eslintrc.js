@@ -62,6 +62,17 @@ module.exports = {
           'unicorn/prefer-optional-catch-binding': 0,
           'unicorn/prefer-trim-start-end': 0,
         }),
+
+    'import/order': [
+      2,
+      {
+        'newlines-between': 'always',
+        'alphabetize': {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
   },
   overrides: [
     {

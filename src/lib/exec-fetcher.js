@@ -1,8 +1,10 @@
 const path = require('path')
+
 const execa = require('execa')
 const { fetchLatest, updateAvailable } = require('gh-release-fetch')
 
 const { NETLIFYDEVWARN } = require('../utils/logo')
+
 const fs = require('./fs')
 
 const isWindows = () => {

@@ -1,21 +1,24 @@
-const path = require('path')
 const http = require('http')
+const path = require('path')
 const url = require('url')
+
+const contentType = require('content-type')
+const cookie = require('cookie')
 const httpProxy = require('http-proxy')
 const { createProxyMiddleware } = require('http-proxy-middleware')
-const cookie = require('cookie')
+const jwtDecode = require('jwt-decode')
 const get = require('lodash.get')
 const isEmpty = require('lodash.isempty')
-const jwtDecode = require('jwt-decode')
-const contentType = require('content-type')
-const toReadableStream = require('to-readable-stream')
 const pFilter = require('p-filter')
-const { createRewriter } = require('./rules-proxy')
+const toReadableStream = require('to-readable-stream')
+
+const { readFileAsync, fileExistsAsync, isFileAsync } = require('../lib/fs.js')
+
 const { createStreamPromise } = require('./create-stream-promise')
-const { onChanges } = require('./rules-proxy')
 const { parseHeadersFile, objectForPath } = require('./headers')
 const { NETLIFYDEVLOG, NETLIFYDEVWARN } = require('./logo')
-const { readFileAsync, fileExistsAsync, isFileAsync } = require('../lib/fs.js')
+const { createRewriter } = require('./rules-proxy')
+const { onChanges } = require('./rules-proxy')
 
 function isInternal(url) {
   return url.startsWith('/.netlify/')

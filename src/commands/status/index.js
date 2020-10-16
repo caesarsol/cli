@@ -1,9 +1,10 @@
-const Command = require('../../utils/command')
-const prettyjson = require('prettyjson')
-const get = require('lodash.get')
+const { flags } = require('@oclif/command')
 const chalk = require('chalk')
 const clean = require('clean-deep')
-const { flags } = require('@oclif/command')
+const get = require('lodash.get')
+const prettyjson = require('prettyjson')
+
+const Command = require('../../utils/command')
 
 class StatusCommand extends Command {
   async run() {

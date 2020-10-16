@@ -1,6 +1,6 @@
 /* eslint prefer-template: 0 */
-const chalk = require('chalk')
 const ansiStyles = require('ansi-styles')
+const chalk = require('chalk')
 
 const forceColor = new chalk.constructor({
   enabled: true,

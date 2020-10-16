@@ -1,7 +1,7 @@
 'use strict'
 
-var request = require('request')
 var Hashids = require('hashids')
+var request = require('request')
 
 module.exports = function handler(event, context, callback) {
   // Set the root URL according to the Netlify site we are within

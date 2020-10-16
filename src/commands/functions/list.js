@@ -1,6 +1,7 @@
-const Command = require('../../utils/command')
 const { flags } = require('@oclif/command')
 const AsciiTable = require('ascii-table')
+
+const Command = require('../../utils/command')
 const { getFunctions } = require('../../utils/get-functions')
 class FunctionsListCommand extends Command {
   async run() {

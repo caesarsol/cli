@@ -18,8 +18,6 @@ async function parseFile(parser, filePath) {
   return result.success
 }
 
-module.exports.parseFile = parseFile
-
 async function parseRules(configFiles) {
   const rules = []
 
@@ -36,8 +34,6 @@ async function parseRules(configFiles) {
   return rules
 }
 
-module.exports.parseRules = parseRules
-
 function onChanges(files, cb) {
   files.forEach((file) => {
     const watcher = chokidar.watch(file)
@@ -46,8 +42,6 @@ function onChanges(files, cb) {
   })
 }
 
-module.exports.onChanges = onChanges
-
 function getLanguage(headers) {
   if (headers['accept-language']) {
     return headers['accept-language'].split(',')[0].slice(0, 2)
@@ -55,13 +49,11 @@ function getLanguage(headers) {
   return 'en'
 }
 
-module.exports.getLanguage = getLanguage
-
 function getCountry() {
   return 'us'
 }
 
-module.exports.createRewriter = async function createRewriter({ distDir, projectDir, jwtSecret, jwtRole, configPath }) {
+const createRewriter = async function ({ distDir, projectDir, jwtSecret, jwtRole, configPath }) {
   let matcher = null
   const configFiles = [
     ...new Set(
@@ -97,7 +89,7 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
     }
   }
 
-  return function (req, res, next) {
+  return function rewriter(req, res, next) {
     getMatcher().then((matcher) => {
       const reqUrl = new url.URL(
         req.url,
@@ -132,4 +124,12 @@ module.exports.createRewriter = async function createRewriter({ distDir, project
       next()
     })
   }
+}
+
+module.exports = {
+  parseFile,
+  parseRules,
+  onChanges,
+  getLanguage,
+  createRewriter,
 }

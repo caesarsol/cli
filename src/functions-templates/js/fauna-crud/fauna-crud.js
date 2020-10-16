@@ -1,4 +1,4 @@
-exports.handler = async (event, context) => {
+const handler = async (event, context) => {
   const path = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
   const segments = path.split('/').filter((e) => e)
 
@@ -49,3 +49,5 @@ exports.handler = async (event, context) => {
     body: 'unrecognized HTTP Method, must be one of GET/POST/PUT/DELETE',
   }
 }
+
+module.exports = { handler }

@@ -26,6 +26,7 @@ module.exports = {
     // Those ESLint rules are not enabled by Prettier, ESLint recommended rules
     // nor standard JavaScript. However, they are still useful
     'array-callback-return': [2, { allowImplicit: true, checkForEach: true }],
+    'default-param-last': 2,
     'func-name-matching': [2, { considerPropertyDescriptor: true }],
     'max-params': [2, { max: 4 }],
     'multiline-comment-style': [2, 'separate-lines'],
